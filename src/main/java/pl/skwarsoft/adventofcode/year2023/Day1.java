@@ -1,10 +1,10 @@
 package pl.skwarsoft.adventofcode.year2023;
 
 import lombok.extern.slf4j.Slf4j;
+import pl.skwarsoft.adventofcode.util.FileUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,22 +14,11 @@ import java.util.Objects;
 @Slf4j
 public class Day1 {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         Day1 trebuchet = new Day1();
-        String exampleDocument = """
-                1abc2
-                pqr3stu8vwx
-                a1b2c3d4e5f
-                treb7uchet""";
-        var calibrationValueSum = trebuchet.getCalibrationValueSum(exampleDocument);
-        log.info("calibrationValueSum={} for document:{}{}", calibrationValueSum, System.lineSeparator(), exampleDocument);
-
-        var path = Path.of("src/main/resources/year2023/day1_input.txt");
-        if (Files.exists(path)) {
-            String fullDocument = Files.readString(path);
-            calibrationValueSum = trebuchet.getCalibrationValueSum(fullDocument);
-            log.info("calibrationValueSum={} for document:{}{}", calibrationValueSum, System.lineSeparator(), fullDocument);
-        }
+        var fullDocument = FileUtils.readFromResources("year2023/day1_input.txt");
+        int calibrationValueSum = trebuchet.getCalibrationValueSum(fullDocument);
+        log.info("calibrationValueSum={}", calibrationValueSum);
     }
 
     public int getCalibrationValueSum(String document) {
@@ -46,7 +35,7 @@ public class Day1 {
                 .filter(Character::isDigit)
                 .mapToObj(value -> (char) value)
                 .toList();
-        String joinedNumber = new String(new char[] {digits.getFirst(), digits.getLast()});
+        String joinedNumber = new String(new char[]{digits.getFirst(), digits.getLast()});
         return Integer.parseInt(joinedNumber);
     }
 }
